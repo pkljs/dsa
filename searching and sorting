@@ -1,0 +1,131 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+struct student{
+    int rollno;
+    char name[30];
+    double sgpa;
+};
+
+void display(struct student s[30],int n){
+    cout<<"\nRoll No\tName\tSGPA";
+    for(int i=0;i<n;i++){
+        cout<<"\n"<<s[i].rollno;
+        cout<<"\t"<<s[i].name;
+        cout<<"\t"<<s[i].sgpa;
+    }
+}
+
+void bubblesort(struct student s[30],int n){
+    int i,j;
+    double sg;
+    char na[30];
+    int temp;
+    for(i=0;i<n;i++){
+        for(j=0;j<n-1-i;j++){
+            if(s[j].rollno>s[j+1].rollno){
+                temp=s[j].rollno;
+                s[j].rollno=s[j+1].rollno;
+                s[j+1].rollno=temp;
+                sg=s[j].sgpa;
+                s[j].sgpa=s[j+1].sgpa;
+                s[j+1].sgpa=sg;
+                strcpy(na,s[j].name);
+                strcpy(s[j].name,s[j+1].name);
+                strcpy(s[j+1].name,na);
+            }
+        }
+    }
+    display(s,n);
+}
+
+void insertionsort(struct student s[30],int n){
+    int i,j,r;
+    double sg;
+    char na[30];
+    for(i=1;i<n;i++){
+        strcpy(na,s[i].name);
+        r=s[i].rollno;
+        sg=s[i].sgpa;
+        j=i-1;
+        while (j>=0 && strcmp(s[j].name,na)>0){
+            strcpy(s[j+1].name,s[j].name);
+            s[j+1].rollno=s[j].rollno;
+            s[j+1].sgpa=s[j].sgpa;
+            j--;
+        }
+        strcpy(s[j+1].name,na);
+        s[j+1].rollno=r;
+        s[j+1].sgpa=sg;
+    }
+    display(s,n);
+} 
+
+void binarysearch(struct student s[30],int n,char data[30]){
+    int left=0,right=n-1,mid,flag=0;
+    while(left<=right){
+        mid=(left+right)/2;
+        if(strcmp(data,s[mid].name)==0){
+            flag=1;
+            break;
+        }
+        else if(strcmp(data,s[mid].name)<0){
+            right=mid-1;
+        }
+        else{
+            left=mid+1;
+        }
+    }
+    if (flag==1){
+        cout<<"\nRoll no.: "<<s[mid].rollno;
+        cout<<"\nName: "<<s[mid].name;
+        cout<<"\nSGPA: "<<s[mid].sgpa;
+    }
+    else{
+        cout<<"\nData not found";
+    }
+};
+
+
+int main(){
+    struct student s[30];
+    int i,n,ch;
+    char na[30];
+    cout<<"\nEnter total number of students: ";
+    cin>>n;
+    cout<<"\nEnter student information: ";
+    for(i=0;i<n;i++){
+        cout<<"\nEnter roll no. of student "<<i+1<<": ";
+        cin>>s[i].rollno;
+        cout<<"\nEnter name of student "<<i+1<<": ";
+        cin>>s[i].name;
+        cout<<"\nEnter SGPA of student "<<i+1<<": ";
+        cin>>s[i].sgpa;
+    }
+    display(s,n);
+
+    do{
+        cout<<"\n1. Bubble sort(according to rollno)";
+        cout<<"\n2. Insertion sort(according to name)";
+        cout<<"\n3. Binary search(according to name)";
+        cout<<"\n4. Exit";
+        cout<<"\nEnter your choice: ";
+        cin>>ch;
+        switch (ch){
+            case 1:
+            bubblesort(s,n);
+            break;
+
+            case 2:
+            insertionsort(s,n);
+            break;
+
+            case 3:
+            cout<<"\nEnter name to search: ";
+            cin>>na;
+            binarysearch(s,n,na);
+            break;
+        }
+    }while(ch!=4);
+}
