@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+class heap
+{
+private:
+    int arr[30];
+    int size;
+
+public:
+    heap()
+    {
+        arr[0] = -1;
+        size = 0;
+    }
+
+private:
+    void heapup(int index)
+    {
+        while (index > 1)
+        {
+            int parent = index / 2;
+            if (arr[parent] < arr[index])
+            {
+                swap(arr[parent], arr[index]);
+                index = parent;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    void heapdown(int index)
+    {
+        while (true)
+        {
+            int left = 2 * index;
+            int right = 2 * index + 1;
+            int largest = index;
+            if (left <= size && arr[left] > arr[largest])
+            {
+                largest = left;
+            }
+            if (right <= size && arr[right] > arr[largest])
+            {
+                largest = right;
+            }
+            if (largest != index)
+            {
+                swap(arr[largest], arr[index]);
+                index = largest;
+            }
+            else{
+                break;
+            }
+        }
+    }
+    public:
+    void push(int data){
+        size++;
+        arr[size]=data;
+        heapup(size);
+    }
+    void pop(){
+        if(size==0){
+            cout<<"Empty";
+        }
+        swap(arr[size],arr[1]);
+        size--;
+        heapdown(1);
+    }
+    int top(){
+        if(size==0){
+            return -1;
+        }
+        return arr[1];
+    }
+};
+void heapsort(int arr[],int n){
+    heap h;
+    for(int i=0; i<n; i++){
+        h.push(arr[i]);
+    }
+    for(int i=n-1; i>=0; i--){
+        arr[i]=h.top();
+        h.pop();
+    }
+}
+int main(){
+    int n;
+    cout<<"Enter number of element"<<endl;
+    cin>>n;
+    int arr[n];
+    for(int i=0; i<n; i++){
+        cout<<"Enter element "<<i+1<<endl;
+        cin>>arr[i];
+    }
+    heapsort(arr,n);
+    for(int i=0; i<n; i++){
+        cout<<arr[i]<<" ";
+    }
+}
