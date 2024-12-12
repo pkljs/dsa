@@ -1,0 +1,205 @@
+#include<iostream>
+using namespace std;
+
+struct node{
+    int data;
+    struct node *next;
+}*newnode,*head,*ptr,*pre;
+
+void insertbeg(int item){
+    newnode=new node;
+    newnode->data=item;
+    newnode->next=head;
+    head=newnode;
+}
+
+void insertend(int item){
+    newnode=new node;
+    newnode->data=item;
+    if(head==NULL){
+        newnode->next=head;
+        head=newnode;
+    }
+    else{
+        ptr=head;
+        while(ptr->next!=NULL){
+            ptr=ptr->next;
+        }
+        ptr->next=newnode;
+        newnode->next=NULL;
+    }
+}
+
+void insertloc(int item,int i){
+    int c=0;
+    newnode=new node;
+    newnode->data=item;
+    if(i==1){
+        newnode->next=head;
+        head=newnode;
+    }
+    else{
+        ptr=head;
+        while(ptr!=NULL){
+            c++;
+            if(i==c){
+                break;
+            }
+            else{
+                pre=ptr;
+                ptr=ptr->next;
+            }
+        }
+        newnode->next=ptr;
+        pre->next=newnode;
+    }
+}
+
+void display(){
+    ptr=head;
+    while(ptr!=NULL){
+        cout<<ptr->data<<"->";
+        ptr=ptr->next;
+    }
+    cout<<"NULL";
+}
+
+void deletebeg(){
+    ptr=head;
+    head=head->next;
+    cout<<"\nDeleted node is "<<ptr->data;
+    delete ptr;
+}
+
+void deleteend(){
+    ptr=head;
+    while(ptr!=NULL){
+        pre=ptr;
+        ptr=ptr->next;
+    }
+    pre->next=NULL;
+    cout<<"\nDeleted node is "<<ptr->data;
+    delete ptr;
+}
+
+void deleteloc(int i){
+    int c=0;
+    if(i==1){
+        ptr=head;
+        head=head->next;
+        delete ptr;
+    }
+    else{
+        ptr=head;
+        while(ptr!=NULL){
+            c++;
+            if(i==c){
+                break;
+            }
+            else{
+                pre=ptr;
+                ptr=ptr->next;
+            }
+        }
+        pre->next=ptr->next;
+        cout<<"\nDeleted node is "<<ptr->data;
+        delete ptr;
+    }
+}
+
+void search(int key){
+    int c=0;
+    ptr=head;
+    while(ptr!=NULL){
+        c++;
+        if(ptr->data==key){
+            cout<<"\n"<<key<<" is found at "<<c<<" location";
+            break;
+        }
+        else{
+            ptr=ptr->next;
+        }
+    }
+    if(ptr==NULL){
+        cout<<"\n"<<key<<" is not found";
+    }
+}
+
+void count(){
+    int c=0;
+    ptr=head;
+    while(ptr!=NULL){
+        c++;
+        ptr=ptr->next;
+    }
+    cout<<"\nTotal number of nodes are: "<<c;
+}
+
+
+int main(){
+    int item,i,ch,key;
+    do{
+        cout<<"\n1. Insertion at beginning";
+        cout<<"\n2. Insertion at end";
+        cout<<"\n3. Insertion at given location";
+        cout<<"\n4. Display";
+        cout<<"\n5. Deletion at beginning";
+        cout<<"\n6. Deletion at end";
+        cout<<"\n7. Deletion at given location";
+        cout<<"\n8. Search";
+        cout<<"\n9. Count";
+        cout<<"\n10. Exit";
+        cout<<"\nEnter your choice: ";
+        cin>>ch;
+        switch(ch){
+            case 1:
+            cout<<"\nEnter data to insert: ";
+            cin>>item;
+            insertbeg(item);
+            break;
+
+            case 2:
+            cout<<"\nEnter data to insert: ";
+            cin>>item;
+            insertend(item);
+            break;
+
+            case 3:
+            cout<<"\nEnter data to insert: ";
+            cin>>item;
+            cout<<"\nEnter the location at which you want to insert: ";
+            cin>>i;
+            insertloc(item,i);
+            break;
+
+            case 4: 
+            display();
+            break;
+
+            case 5:
+            deletebeg();
+            break;
+
+            case 6:
+            deleteend();
+            break;
+
+            case 7:
+            cout<<"\nEnter the location at which you want to delete: ";
+            cin>>i;
+            deleteloc(i);
+            break;
+
+            case 8:
+            cout<<"\nEnter data to search: ";
+            cin>>key;
+            search(key);
+            break;
+
+            case 9:
+            count();
+            break;   
+        }
+    }
+    while(ch!=10);
+}
