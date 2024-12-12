@@ -1,0 +1,72 @@
+#include<iostream>
+using namespace std;
+
+int queue[5];
+int front=-1,rear=-1,n=5;
+
+
+void insert(int data){
+    if(front==-1 && rear==-1){
+        front=rear=0;
+        queue[rear]=data;
+    }
+    else if((rear+1)%n==front){
+        cout<<"\nQueue is full";
+     }
+    else{
+        rear=(rear+1)%n;
+        queue[rear]=data;
+    }
+}
+
+void deletequ(){
+    if (front==-1){
+        cout<<"\nQueue is empty";
+    }
+    else if (front==rear){
+        cout<<"\nDeleted element is "<<queue[front];
+        front=rear=-1;
+    }
+    else{
+        cout<<"\nDeleted element is "<<queue[front];
+        front=(front+1)%n;
+    }
+}
+
+void display(){
+    if(front==-1){
+        cout<<"\nQueue is empty";
+    }
+    else{
+        for(int i=front;i!=rear;i=(i+1)%n){
+            cout<<queue[i]<<" ";
+        }
+        cout<<queue[rear];
+    }
+}
+
+int main(){
+    int ch,data;
+    do{
+        cout<<"\n1. Insertion in circular queue";
+        cout<<"\n2. Deletion in circular queue";
+        cout<<"\n3. Display";
+        cout<<"\n4. Exit";
+        cout<<"\nEnter your choice: ";
+        cin>>ch;
+        switch(ch){
+            case 1: 
+            cout<<"\nEnter the data you want to insert: ";
+            cin>>data;
+            insert(data);
+            break;
+
+            case 2:
+            deletequ();
+            break;
+
+            case 3:
+            display();
+        }
+    }while(ch!=4);
+}
