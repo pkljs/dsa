@@ -1,0 +1,162 @@
+#include<iostream>
+using namespace std;
+
+struct tree{
+    int data;
+    tree *left;
+    tree *right;
+}*root,*newnode,*ptr,*parent;
+
+void insertnode(int x){
+    newnode=new tree;
+    newnode->data=x;
+    newnode->left=NULL;
+    newnode->right=NULL;
+
+    if(root==NULL){
+        root=newnode;
+    }
+    else{
+        ptr=root;
+        while(ptr!=NULL){
+            parent=ptr;
+            if(x>ptr->data){
+                ptr=ptr->right;
+            }
+            else{
+                ptr=ptr->left;
+            }
+        }
+        if(x>parent->data){
+            parent->right=newnode;
+        }
+        else{
+            parent->left=newnode;
+        }
+    }
+}
+
+
+void inorder(tree *ptr){
+    if(ptr!=NULL){
+        inorder(ptr->left);
+        cout<<ptr->data<<" ";
+        inorder(ptr->right);
+    }
+}
+
+void preorder(tree *ptr){
+    if(ptr!=NULL){
+        cout<<ptr->data<<" ";
+        preorder(ptr->left);
+        preorder(ptr->right);
+    }
+}
+
+void postorder(tree *ptr){
+    if(ptr!=NULL){
+        postorder(ptr->left);
+        postorder(ptr->right);
+        cout<<ptr->data<<" ";
+    }
+}
+
+void search(int x){
+    if(root==NULL){
+        cout<<"\ntree is empty";
+        return;
+    }
+    ptr=root;
+    while(ptr!=NULL){
+        if(ptr->data==x){
+            cout<<x<<" is found";
+            break;
+        }
+        else if(x>ptr->data){
+            ptr=ptr->right;
+        }
+        else{
+            ptr=ptr->left;
+        }
+    }
+    if(ptr==NULL){
+        cout<<x<<" is not found";
+    }
+}
+
+int depth(tree *ptr){
+    if(ptr==NULL){
+        return 0;
+    }
+    int right=depth(ptr->right);
+    int left=depth(ptr->left);
+    return(max(right,left)+1);
+}
+
+void leafnode(tree *ptr){
+    if(ptr==NULL){
+        return;
+    }
+    if(ptr->left==NULL && ptr->right==NULL){
+        cout<<ptr->data<<" ";
+        return;
+    }
+    if(ptr->left){
+        leafnode(ptr->left);
+    }
+    if(ptr->right){
+        leafnode(ptr->right);
+    }
+}
+
+
+int main(){
+    int ch,x;
+    do{
+        cout<<"\n1. Insertion in BST";
+        cout<<"\n2. Inorder traversing";
+        cout<<"\n3. Preorder traversing";
+        cout<<"\n4. Postorder traversing";
+        cout<<"\n5. Search";
+        cout<<"\n6. Depth of a tree";
+        cout<<"\n7. Print leafnode";
+        cout<<"\n8. Exit";
+        cout<<"\nEnter your choice: ";
+        cin>>ch;
+
+        switch(ch){
+            case 1:
+            cout<<"Enter the data to insert: ";
+            cin>>x;
+            insertnode(x);
+            break;
+
+            case 2:
+            inorder(root);
+            break;
+
+            case 3:
+            preorder(root);
+            break;
+
+            case 4:
+            postorder(root);
+            break;
+
+            case 5:
+            cout<<"\nEnter the data you want to search: ";
+            cin>>x;
+            search(x);
+            break;
+
+            case 6:
+            x=depth(root);
+            cout<<x;
+            break;
+
+            case 7:
+            leafnode(root);
+            break;
+        }
+    }while(ch!=8);
+}
